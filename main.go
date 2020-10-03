@@ -8,16 +8,16 @@ import (
 
 func main() {
 
-	// str := "457495568577854048478878448786079540"
 	_ = term.Init()
 
 	gameLogic := GameBusinessLogic{[][]int{
-		[]int{2, 0, 0, 0},
-		[]int{0, 2, 0, 2},
-		[]int{2, 2, 4, 8},
-		[]int{12, 24, 12, 12},
+		[]int{0, 0, 0, 0},
+		[]int{0, 0, 0, 0},
+		[]int{0, 0, 0, 0},
+		[]int{0, 0, 0, 0},
 	}, 0}
-
+	positionsMap := gameLogic.randowNewCellPosition()
+	gameLogic.SetNewValue(positionsMap["column"], positionsMap["row"])
 	draw(template(gameLogic.table))
 
 	defer term.Close()
@@ -59,6 +59,8 @@ func main() {
 				term.Close()
 				os.Exit(0)
 			}
+			positionsMap := gameLogic.randowNewCellPosition()
+			gameLogic.SetNewValue(positionsMap["column"], positionsMap["row"])
 		}
 
 	}

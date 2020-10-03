@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 
 	term "github.com/nsf/termbox-go"
 )
@@ -172,10 +173,47 @@ func template(gameNumbsTable [][]int) []string {
 
 func draw(table []string) {
 	term.Clear(term.ColorDefault, term.ColorDefault)
+
 	for indexTable, tab := range table {
 		for indexTab, let := range []rune(tab) {
 			term.SetCell(indexTab, indexTable, let, term.ColorBlue, term.ColorDefault)
 		}
 	}
 	_ = term.Flush()
+}
+
+func (gameLogic *GameBusinessLogic) randowNewCellPosition() map[string]int {
+	table := gameLogic.table
+	columnNumb := 0
+	cellNumb := 0
+	breakLoops := false
+	for {
+		randomColumnNumb := rand.Intn(len(table))
+		for indexCell := range table[randomColumnNumb] {
+			if table[randomColumnNumb][indexCell] == 0 {
+				columnNumb = randomColumnNumb
+				breakLoops = true
+				break
+			}
+
+		}
+
+		if breakLoops {
+			for {
+				randomCellNumb := rand.Intn(len(table[randomColumnNumb]))
+				if table[randomColumnNumb][randomCellNumb] == 0 {
+					cellNumb = randomCellNumb
+					break
+				}
+			}
+			break
+		}
+
+	}
+	return map[string]int{"column": columnNumb, "row": cellNumb}
+}
+
+// SetNewValue is responsible for set a new value
+func (gameLogic *GameBusinessLogic) SetNewValue(columnPosition int, rowPosition int) {
+	gameLogic.table[columnPosition][rowPosition] = 2
 }
